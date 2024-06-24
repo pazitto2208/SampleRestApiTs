@@ -1,11 +1,11 @@
-import DataAccess from "../dataAccess/dataAccess.ts"
-import { notFound, ok, serverError } from "../helpers/jsonResponses.ts"
+import { IDataAccess } from "../dataAccess/iDataAccess.ts"
 import { IControllers } from "./iControllers.ts"
+import { notFound, serverError, ok } from "../helpers/jsonResponses.ts"
 
 export default class Controllers<T> implements IControllers<T> {
-    dataAccess: DataAccess<T>
+    dataAccess: IDataAccess<T>
     
-    constructor(dataAccess: DataAccess<T>) {
+    constructor(dataAccess: IDataAccess<T>) {
         this.dataAccess = dataAccess
     }
 
@@ -60,4 +60,5 @@ export default class Controllers<T> implements IControllers<T> {
             return serverError(error)
         }
     }
+
 }

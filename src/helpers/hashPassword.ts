@@ -2,7 +2,7 @@ import crypto from 'crypto'
 
 interface IHashResult {
     success: boolean
-    error?: string | Error
+    error?: string | Error 
     password: Buffer | string
     salt: Buffer | string
 }

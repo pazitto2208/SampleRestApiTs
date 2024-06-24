@@ -1,7 +1,7 @@
 export default interface IUserModel {
-    _id?: string
+    id?: string
     username: string
-    password: Buffer | string
-    salt: Buffer | string
+    password: string
+    salt: string
     token?: string
 }

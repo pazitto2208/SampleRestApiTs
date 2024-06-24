@@ -1,4 +1,4 @@
-import { IJsonResponse } from '../helpers/jsonResponses.ts'
+import { IJsonResponse } from "../helpers/jsonResponses.ts"
 
 export interface IControllers<T> {
     getAll(): Promise<IJsonResponse<T> | IJsonResponse<undefined>>
