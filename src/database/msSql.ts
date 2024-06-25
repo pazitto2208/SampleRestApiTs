@@ -1,13 +1,19 @@
-import mssql from 'mssql'
+import mssql, { ConnectionPool } from 'mssql'
+import { config } from 'dotenv'
 
-export const MsSqlClient: any = {
-    async connect(connectionString: string) {
+config()
+
+export const MsSqlClient: {
+    pool: ConnectionPool,
+    init(): Promise<void>
+} = {
+    pool: new mssql.ConnectionPool(String(process.env.MS_SQL_CS)),
+    async init() {
         try {
-            const client = await mssql.connect(connectionString)
-            this.db = client
-            console.log('Connected to the database successfully')
+            this.pool = await this.pool.connect()
+            console.log('MsSql connected!')
         } catch (error) {
             console.log(error)
         }
-    }
+    },
 }

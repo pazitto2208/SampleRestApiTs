@@ -1,11 +1,13 @@
-export interface IJsonResponse<T> {
+import { IRecordSet } from "mssql"
+
+export interface IJsonResponse {
     statusCode: number
     success: boolean
-    body?: T
+    body?: any
     message?: string
 }
 
-const jsonResponse = <T>(statusCode: number, success: boolean, body: T, message: string | undefined) : IJsonResponse<T> => {
+const jsonResponse = (statusCode: number, success: boolean, body: any, message?: string) : IJsonResponse => {
     return { 
         success,
         statusCode, 
@@ -14,18 +16,18 @@ const jsonResponse = <T>(statusCode: number, success: boolean, body: T, message:
     }
 }
 
-export const ok = <T>(body: T, statusCode: number, message: string | undefined): IJsonResponse<T> => {
+export const ok = (body: any, statusCode: number, message?: string): IJsonResponse => {
     return jsonResponse(statusCode, true, body, message)
 }
 
-export const unauthorized = (): IJsonResponse<undefined> => {
+export const unauthorized = (): IJsonResponse => {
     return jsonResponse(401, false, undefined, 'Unauthorized')
 }
 
-export const notFound = (): IJsonResponse<undefined> => {
+export const elementNotFound = (): IJsonResponse => {
     return jsonResponse(404, false, undefined, 'Not Found')
 }
 
-export const serverError = (error: any): IJsonResponse<undefined> => {
+export const serverError = (error: any): IJsonResponse => {
     return jsonResponse(500, false, undefined, error.message)
 }

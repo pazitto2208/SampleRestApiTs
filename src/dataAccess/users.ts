@@ -16,23 +16,20 @@ export default class UsersDataAccess {
         return this.dataAccess.getUserByUsername(username)
     }
 
-    getAll(): Promise<IUserModel> {
+    getAll() {
         return this.dataAccess.getAll()
     }
 
-    getById(id: string): Promise<IUserModel | null> {
-        return this.dataAccess.getById(id)
-    }
-
-    deleteById(id: string): Promise<boolean> {
+    deleteById(id: string) {
         return this.dataAccess.deleteById(id)
     }
 
-    addOne(user: IUserModel): Promise<IUserModel> {
-        return this.dataAccess.addOne(user)
+
+    getById(id: string) {
+        return this.dataAccess.getById(id)
     }
 
-    updateById(id: string, user: IUserModel): Promise<IUserModel | null> {
-        return this.dataAccess.updateById(id, user)
+    addOne(dataToInsert: Partial<IUserModel>) {
+        return this.dataAccess.addOne(dataToInsert)
     }
 }

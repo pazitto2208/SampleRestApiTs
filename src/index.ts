@@ -1,12 +1,9 @@
-import { config } from 'dotenv'
-import httpServer from './http/server.ts'
 import { MsSqlClient } from './database/msSql.ts'
-
-config()
+import httpServer from './http/server.ts'
 
 async function main () {
-    await MsSqlClient.connect(process.env.MS_SQL_CS)
-    
+    await MsSqlClient.init()
+
     httpServer()
 }
 
