@@ -104,22 +104,19 @@ export default class UsersMsSqlRepository implements IUsersDataAccess {
         })
     }
     
-    getUserByUsername(username: string): Promise<any> {
+    getUserByUsername(username: string): Promise<IDbResult<IUserModel>> {
         return new Promise(async (resolve, reject) => {
             const query = `SELECT * FROM [Pazitto-Users] WHERE username = ${username}`
             await this.pool.query(query)
-            .then((res: any) => {
-                if(res.rowsAffected[0]) {
-                    resolve({success: true, data: res.recordset}) 
-                } else {
-                    throw new Error
+            .then(({ recordset, rowsAffected }: IResult<IUserModel>) => {
+                if(!rowsAffected[0]) {
+                    resolve({success: false, notFound: true})
                 }
+                resolve({success: true, data: recordset})
             })
             .catch((error: any) => {
                 reject({success: false, error})
             })
         })
     }
-
-
 }
