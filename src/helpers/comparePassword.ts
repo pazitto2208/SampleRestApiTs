@@ -1,21 +1,32 @@
 import crypto from 'crypto'
 
-export default function comparePasswords(password: string | Buffer, userPassword: any, userSalt: any) {
+export interface IComparePasswordsResult {
+    success: boolean
+    error?: Error
+    compareFail?: boolean
+}
+
+export default function comparePasswords(password: string, userPassword: string, userSalt: string): Promise<IComparePasswordsResult> {
     return new Promise((resolve) => {
-        crypto.pbkdf2(password, userSalt.buffer, 310000, 16, 'sha256', 
+        const userPasswordBuffer = Buffer.from(userPassword, 'base64');
+        const userSaltBuffer = Buffer.from(userSalt, 'base64');
+
+        crypto.pbkdf2(password, userSaltBuffer, 310000, 16, 'sha256', 
         (error, hashedPassword) => {
             if (error) { 
                 resolve({
                     success: false, 
                     error,
                 }) 
+                return;
             }
-            
-            if(!crypto.timingSafeEqual(userPassword.buffer, hashedPassword)) {
+
+            if (!crypto.timingSafeEqual(userPasswordBuffer, hashedPassword)) {
                 resolve({
-                    success: false, 
+                    success: false,
                     compareFail: true,
-                }) 
+                })
+                return;
             }
 
             resolve({

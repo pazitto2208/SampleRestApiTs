@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import usersRouter from '../routes/users.ts'
+import authRouter from '../routes/auth.ts'
 
 export default function httpServer () {
     const hostname = 'localhost'
@@ -13,6 +14,7 @@ export default function httpServer () {
 
     // routes
     app.use('/users', usersRouter)
+    app.use('/auth', authRouter)
     
     app.listen(port, () => {
         console.log(`Server running on: http://${hostname}:${port}`)

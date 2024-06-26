@@ -3,8 +3,8 @@ import crypto from 'crypto'
 interface IHashResult {
     success: boolean
     error?: string | Error 
-    password: Buffer | string
-    salt: Buffer | string
+    password: string
+    salt: string
 }
 
 export default function hashPassword(
@@ -27,13 +27,13 @@ export default function hashPassword(
                         password: '',
                         salt: ''
                     })
-                } else {
-                    resolve({ 
-                        success: true, 
-                        password: hashedPassword, 
-                        salt 
-                    })
                 }
+
+                resolve({ 
+                    success: true, 
+                    password: hashedPassword.toString('base64'), 
+                    salt: salt.toString('base64')
+                })
             }
         )
     })

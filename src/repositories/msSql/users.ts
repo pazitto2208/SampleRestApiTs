@@ -106,8 +106,11 @@ export default class UsersMsSqlRepository implements IUsersDataAccess {
     
     getUserByUsername(username: string): Promise<IDbResult<IUserModel>> {
         return new Promise(async (resolve, reject) => {
-            const query = `SELECT * FROM [Pazitto-Users] WHERE username = ${username}`
-            await this.pool.query(query)
+            const query = `SELECT * FROM [Pazitto-Users] WHERE username = @username`
+            await this.pool
+            .request()
+            .input('username', username)
+            .query(query)
             .then(({ recordset, rowsAffected }: IResult<IUserModel>) => {
                 if(!rowsAffected[0]) {
                     resolve({success: false, notFound: true})
@@ -115,6 +118,7 @@ export default class UsersMsSqlRepository implements IUsersDataAccess {
                 resolve({success: true, data: recordset})
             })
             .catch((error: any) => {
+                console.log(error)
                 reject({success: false, error})
             })
         })

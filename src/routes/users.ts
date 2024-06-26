@@ -19,6 +19,12 @@ usersRouter.get('/', async (req, res) => {
     res.status(result.statusCode).send(result)
 })
 
+usersRouter.get('/:username', async (req, res) => {
+    const result = await usersControllers.getUserByUsername(req.params.username)
+
+    res.status(result.statusCode).send(result)
+})
+
 usersRouter.get('/:id', async (req, res) => {
     const result = await usersControllers.getById(req.params.id)
 
