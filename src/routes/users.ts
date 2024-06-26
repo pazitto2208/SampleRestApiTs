@@ -19,20 +19,8 @@ usersRouter.get('/', async (req, res) => {
     res.status(result.statusCode).send(result)
 })
 
-usersRouter.get('/:username', async (req, res) => {
-    const result = await usersControllers.getUserByUsername(req.params.username)
-
-    res.status(result.statusCode).send(result)
-})
-
 usersRouter.get('/:id', async (req, res) => {
     const result = await usersControllers.getById(req.params.id)
-
-    res.status(result.statusCode).send(result)
-})
-
-usersRouter.post('/', async (req, res) => {
-    const result = await usersControllers.addOne(req.body)
 
     res.status(result.statusCode).send(result)
 })

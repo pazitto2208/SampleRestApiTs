@@ -1,13 +1,7 @@
 import { IUsersDataAccess } from "../../dataAccess/users.ts"
+import { IDbResult } from "../../helpers/dbResult.ts"
 import IUserModel from "../../models/user.ts"
-import mssql, { ConnectionPool, IRecordSet, IResult } from 'mssql'
-
-export interface IDbResult<T> {
-    success: boolean
-    notFound?: boolean
-    data?: IRecordSet<T>
-    error?: Error
-}
+import mssql, { ConnectionPool, IResult } from 'mssql'
 
 export default class UsersMsSqlRepository implements IUsersDataAccess {
     pool: ConnectionPool
@@ -64,7 +58,8 @@ export default class UsersMsSqlRepository implements IUsersDataAccess {
     addOne({ password, username, salt } : IUserModel): Promise<IDbResult<IUserModel>> {
         return new Promise(async (resolve, reject) => {
             const query = `INSERT INTO [Pazitto-Users] ([username],[password],[salt]) VALUES (@username, @password, @salt)`
-            await this.pool.request()
+            await this.pool
+            .request()
             .input('username', mssql.VarChar, username)
             .input('password', mssql.VarChar, password)
             .input('salt', mssql.VarChar, salt)

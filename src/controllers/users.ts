@@ -9,16 +9,16 @@ export interface IUserControllers extends IControllers {
 }
 
 export default class UsersControllers extends Controllers<IUserModel> implements IUserControllers {
-    userDataAccess: IUsersDataAccess
+    dataAccess: IUsersDataAccess
     
     constructor(dataAccess: IUsersDataAccess) {
         super(dataAccess)
-        this.userDataAccess = dataAccess
+        this.dataAccess = dataAccess
     } 
 
     async getUserByUsername(username: string): Promise<IJsonResponse> {
         try {
-            const { success, error, data, notFound } = await this.userDataAccess.getUserByUsername(username)
+            const { success, error, data, notFound } = await this.dataAccess.getUserByUsername(username)
 
             if(success) {
                 return ok(data, 200)
