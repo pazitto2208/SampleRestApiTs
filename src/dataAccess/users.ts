@@ -1,5 +1,5 @@
+import { IDbResult } from '../helpers/dbResult.ts'
 import IUserModel from '../models/user.ts'
-import { IDbResult } from '../repositories/msSql/users.ts'
 import { IDataAccess } from './iDataAccess.ts'
 
 export interface IUsersDataAccess extends IDataAccess<IUserModel> {
@@ -12,6 +12,10 @@ export default class UsersDataAccess implements IUsersDataAccess{
     constructor(dataAccess: IUsersDataAccess) {
         this.dataAccess = dataAccess
     }   
+
+    updateById(id: string, dataUpdated: Partial<IUserModel>): Promise<IDbResult<IUserModel>> {
+        return this.dataAccess.updateById(id, dataUpdated)
+    }
 
     getUserByUsername(username: string): Promise<IDbResult<IUserModel>> {
         return this.dataAccess.getUserByUsername(username)

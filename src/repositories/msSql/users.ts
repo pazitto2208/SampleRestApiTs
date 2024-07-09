@@ -79,12 +79,11 @@ export default class UsersMsSqlRepository implements IUsersDataAccess {
 
     updateById(id: string, dataUpdated: Partial<IUserModel>): Promise<IDbResult<IUserModel>> {
         return new Promise(async (resolve, reject) => {
-            const fields = Object
-            .keys(dataUpdated)
-            .map(key => `[${key}] = ${key}`)
+            const fields = Object.keys(dataUpdated)
+            .map(key => `[${key}] = '${(dataUpdated as any)[key]}'`)
             .join(', ')
-            
-            const query = `UPDATE [Pazitto-Users] SET ${fields} WHERE id = ${id}`            
+
+            const query = `UPDATE [Pazitto-Users] SET ${fields} WHERE id = '${id}'`
             await this.pool.query(query)
             .then((res: any) => {
                 if(res.rowsAffected[0]) {
@@ -94,7 +93,7 @@ export default class UsersMsSqlRepository implements IUsersDataAccess {
                 }
             })
             .catch((error: any) => {
-                reject({success: false, error})
+                reject({ success: false, error })
             })
         })
     }

@@ -2,11 +2,27 @@ import { IDataAccess } from "../dataAccess/iDataAccess.ts"
 import { IControllers } from "./iControllers.ts"
 import { elementNotFound, serverError, ok, IJsonResponse } from "../helpers/jsonResponses.ts"
 
-export default class Controllers<T> implements IControllers {
+export default class Controllers<T> implements IControllers<T> {
     dataAccess: IDataAccess<T>
     
     constructor(dataAccess: IDataAccess<T>) {
         this.dataAccess = dataAccess
+    }
+
+    async updateById(id: string, dataUpdated: Partial<T>): Promise<IJsonResponse> {
+        try {
+            const { success, error, data, notFound } = await this.dataAccess.updateById(id, dataUpdated)
+
+            if(success) {
+                return ok(data, 200)
+            } else if (notFound) {
+                return elementNotFound()
+            } else {
+                throw new Error(error?.message)
+            }
+        } catch (err) {
+            return serverError(err)
+        }
     }
 
     async addOne(dataToInsert: Partial<T>): Promise<IJsonResponse> {
