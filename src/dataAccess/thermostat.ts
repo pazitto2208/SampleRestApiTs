@@ -23,4 +23,8 @@ export default class ThermostatDataAccess {
     addOne(dataToInsert: Partial<IThermostatModel>) {
         return this.dataAccess.addOne(dataToInsert)
     }
+
+    updateById(id: string, dataUpdated: Partial<IThermostatModel>) {
+        return this.dataAccess.updateById(id, dataUpdated)
+    }
 }

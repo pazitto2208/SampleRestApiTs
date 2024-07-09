@@ -63,7 +63,7 @@ export default class ThermostatMsSqlRepository implements IDataAccess<IThermosta
         return new Promise(async (resolve, reject) => {
             const fields = Object
             .keys(dataUpdated)
-            .map(key => `[${key}] = ${key}`)
+            .map(key => `[${key}] = '${(dataUpdated as any)[key]}'`)
             .join(', ')
             
             const query = `UPDATE [Pazitto-Thermostat] SET ${fields} WHERE id = ${id}`            
