@@ -10,19 +10,24 @@ export default class JsowWebToken {
         return jwt.sign(userSanitized, this.jwtSecret)
     }
     
-    verify(token: string) {
+    verify(token: string, user: IUserModel): Promise<{ success: boolean, user?: IUserModel }> {
         return new Promise((resolve, reject) => {
-            jwt.verify(token, this.jwtSecret, async (err, decoded) => {
-                if (err && decoded) { 
+            jwt.verify(token, this.jwtSecret, (err, userDecoded) => {
+                if (err || !userDecoded) { 
                     reject({ 
-                        invalidToken: true, 
                         success: false 
                     }) 
                 }
 
+                if ((userDecoded as IUserModel).id !== user.id) {
+                    reject({ 
+                        success: false 
+                    })
+                }
+
                 resolve({
                     success: true,
-                    user: decoded
+                    user: userDecoded as IUserModel
                 })
             })
         })

@@ -4,6 +4,7 @@ import UsersControllers from '../controllers/users.ts'
 import UsersDataAccess from '../dataAccess/users.ts'
 import { MsSqlClient } from '../database/msSql.ts'
 import { config } from 'dotenv'
+import { isAuthenticated } from '../middlewares/isAuthenticated.ts'
 
 config()
 
@@ -13,7 +14,7 @@ const usersMsSqlRepository = new UsersMsSqlRepository(MsSqlClient.pool)
 const usersDataAcces = new UsersDataAccess(usersMsSqlRepository)
 const usersControllers = new UsersControllers(usersDataAcces)
 
-usersRouter.get('/', async (req, res) => {
+usersRouter.get('/', isAuthenticated, async (req, res) => {
     const result = await usersControllers.getAll()
 
     res.status(result.statusCode).send(result)

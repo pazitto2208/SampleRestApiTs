@@ -1,5 +1,3 @@
-import { IRecordSet } from "mssql"
-
 export interface IJsonResponse {
     statusCode: number
     success: boolean
